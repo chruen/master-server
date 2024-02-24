@@ -1,0 +1,23 @@
+server:
+  address: 0.0.0.0
+  port: 8080
+
+# 数据库数据源
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://172.22.185.20:3306/test_schema?useSSL=false@serverTImezone=GMT"
+    username: chruen
+    password: 12345678
+
+
+mybatis:
+  type-aliases-package: com.swjtu.robot.masterserver.pojo
+  mapper-locations: classpath:/mybatis/*.xml
+
+logging:
+  file:
+    name: log/log.log
+  level:
+    root: info
+    com.swjtu.robot.masterserver: debug
