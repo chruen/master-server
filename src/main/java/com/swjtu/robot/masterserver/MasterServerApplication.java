@@ -1,5 +1,6 @@
 package com.swjtu.robot.masterserver;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * 引导类，springboot项目的入口
  */
+@MapperScan("com.")
 @SpringBootApplication
 public class MasterServerApplication {
     public static void main(String[] args) {
