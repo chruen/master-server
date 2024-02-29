@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * 引导类，springboot项目的入口
  */
-@MapperScan("com.")
 @SpringBootApplication
+@MapperScan("com.swjtu.robot.masterserver.mapper")
 public class MasterServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(MasterServerApplication.class, args);

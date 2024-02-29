@@ -1,12 +1,12 @@
 server:
   address: 0.0.0.0
-  port: 8080
+  port: 8082
 
 # 数据库数据源
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://172.22.185.20:3306/test_schema?useSSL=false@serverTImezone=GMT"
+    url: jdbc:mysql://172.22.185.20:3306/robot?useSSL=false&serverTimezone=UTC
     username: chruen
     password: 12345678
   data:
@@ -19,9 +19,10 @@ spring:
           max-idle: 10
           min-idle: 1
           time-between-eviction-runs: 10s
+      password: 12345678
 
-mybatis-plus:
-  type-aliases-package: com.swjtu.robot.masterserver.entity # 别名扫描包
+
+
 
 logging:
   file:
