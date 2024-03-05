@@ -1,6 +1,9 @@
 package com.swjtu.robot.masterserver.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.lang.UUID;
+import com.swjtu.robot.masterserver.DTO.UserDTO;
 import com.swjtu.robot.masterserver.VO.LoginFromVO;
 import com.swjtu.robot.masterserver.VO.Result;
 import com.swjtu.robot.masterserver.VO.SignUpVo;
@@ -16,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static com.swjtu.robot.masterserver.utils.RedisConstants.USER_TOKEN;
@@ -45,8 +50,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         if(!verifyPassword){
             return Result.fail("密码错误，请重试");
         }
-        String uuid = UUID.randomUUID().toString();
-        stringRedisTemplate.opsForValue().set(USER_TOKEN+user.getId().toString(),uuid,USER_TOKEN_TTL, TimeUnit.MINUTES);
+        String uuid = userSignIn(user);
         return Result.ok(uuid);
     }
 
@@ -57,11 +61,31 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
         user.setId(new UserIdFactory(stringRedisTemplate).getNextId());
         user.setPassword(PasswordEncoder.encode(user.getPassword()));
         save(user);
-        String uuid = UUID.randomUUID().toString();
-        stringRedisTemplate.opsForValue().set(USER_TOKEN+user.getId().toString(),uuid,USER_TOKEN_TTL, TimeUnit.MINUTES);
+
+        String uuid = userSignIn(user);
+
         SignUpVo userVo = new SignUpVo();
         userVo.setUserId(user.getId());
         userVo.setToken(uuid);
         return Result.ok(userVo);
+    }
+
+    private String userSignIn(Users user) {
+        String uuid = UUID.randomUUID().toString();
+        UserDTO userDTO = BeanUtil.copyProperties(user, UserDTO.class);
+        Map<String,Object> userMap = BeanUtil.beanToMap(userDTO,
+                new HashMap<>(),
+                CopyOptions.create()
+                        .setIgnoreNullValue(true)
+                        .setIgnoreError(true)
+                        .setFieldValueEditor(((name,value)->{
+                            if(value!=null){
+                                return value.toString();
+                            }
+                            return "";
+                        })));
+        stringRedisTemplate.opsForHash().putAll(USER_TOKEN+uuid,userMap);
+        stringRedisTemplate.expire(USER_TOKEN+uuid,USER_TOKEN_TTL,TimeUnit.MINUTES);
+        return uuid;
     }
 }
