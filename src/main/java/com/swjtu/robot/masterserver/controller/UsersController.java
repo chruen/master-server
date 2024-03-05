@@ -1,14 +1,13 @@
 package com.swjtu.robot.masterserver.controller;
 
 
+import com.swjtu.robot.masterserver.VO.LoginFromVO;
 import com.swjtu.robot.masterserver.VO.Result;
+import com.swjtu.robot.masterserver.entity.Users;
 import com.swjtu.robot.masterserver.service.IUsersService;
 import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -24,8 +23,14 @@ public class UsersController {
     @Resource
     IUsersService usersService;
 
-    @GetMapping("/{id}")
-    public Result getByUserId(@PathVariable("id") Long id){
-        return Result.ok(usersService.getById(id));
+    @PostMapping("/login")
+    public Result login(@RequestBody LoginFromVO loginFrom, HttpSession session){
+        return usersService.login(loginFrom, session);
     }
+
+    @PostMapping("/sign")
+    public Result signUp(@RequestBody Users user,HttpSession session){
+        return usersService.signUp(user,session);
+    }
+
 }
