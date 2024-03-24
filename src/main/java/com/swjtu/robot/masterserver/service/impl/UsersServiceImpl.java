@@ -42,6 +42,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
 
     @Override
     public Result login(LoginFromVO login, HttpSession session) {
+
         Users user = getById(login.getUserId());
         if(user==null){
             return Result.fail("用户不存在");
