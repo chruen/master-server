@@ -15,8 +15,9 @@ import java.util.List;
 @MapperScan("com.swjtu.robot.masterserver.mapper")
 public class MasterServerApplication {
     public static void main(String[] args) {
-        SpringApplication.run(MasterServerApplication.class, args);
-        //var ioc  = SpringApplication.run(MasterServerApplication.class, args);
+        //SpringApplication.run(MasterServerApplication.class, args);
+        var ioc  = SpringApplication.run(MasterServerApplication.class, args);
+        System.out.println(ioc);
         // String[] beanNames = ioc.getBeanDefinitionNames();
         // List<String> s_beanNames = new ArrayList<>(List.of(beanNames));
         // Collections.sort(s_beanNames);
