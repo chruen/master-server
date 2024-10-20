@@ -19,12 +19,7 @@ import java.util.concurrent.*;
 import static com.swjtu.robot.masterserver.utils.SystemConstants.ROBOT_PICTURE_TTL;
 
 /**
- * <p>
- *  服务实现类
- * </p>
- *
- * @author author
- * @since 2024-02-29
+ * 实现
  */
 @Slf4j
 @Service
